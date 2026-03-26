@@ -1,7 +1,7 @@
 import { Review } from "../models/review.js";
 import { User } from "../models/Users.js";  // <- agregar esta línea
 
-// get all reviews
+// GET all reviews
 export const getAllReviews = async (req, res) => {
     try {
         const reviews = await Review.findAll({
@@ -17,7 +17,26 @@ export const getAllReviews = async (req, res) => {
     }
 };
 
-// create new review
+// GET reviews by user id
+export const getUserReviews = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const reviews = await Review.findAll({
+            where: {
+                userId: id,
+            },
+            include: {
+                model: User,
+                as: "user",
+                attributes: ["name", "username", "profileImage", "id"],
+            },
+        });
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+};
+
+// POST create new review
 export const createReview = async (req, res) => {
     try {
         const newReview = await Review.create(req.body);
@@ -34,7 +53,7 @@ export const createReview = async (req, res) => {
     }
 };
 
-// update review by id
+// PUT update review by id
 export const updateReview = async (req, res) => {
     try {
         const id = req.params.id;
@@ -49,7 +68,7 @@ export const updateReview = async (req, res) => {
     }
 };
 
-// delete review by id
+// DELETE review by id
 export const deleteReview = async (req, res) => {
     try {
         const id = req.params.id;
@@ -64,7 +83,7 @@ export const deleteReview = async (req, res) => {
     }
 };
 
-// get review by id
+// GET review by id
 export const getReviewById = async (req, res) => {
     try {
         const id = req.params.id;
@@ -94,21 +113,4 @@ export const getRepliesByReviewId = async (req, res) => {
     }
 };
 
-// get reviews by user id
-export const getUserReviews = async (req, res) => {
-    const id = req.params.id;
-    try {
-        const reviews = await Review.findAll({
-            where: {
-                userId: id,
-            },
-            include: {
-                model: User,
-                as: "user",
-                attributes: ["name", "username", "profileImage", "id"],
-            },
-        });
-    } catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
-};
+

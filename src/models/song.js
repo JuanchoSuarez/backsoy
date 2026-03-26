@@ -1,82 +1,48 @@
-export default class Song {
-    constructor(id, name, rating, description, creationDate, artist, reviews = []) {
-        this.id = id;
-        this.name = name;
-        this.rating = rating;
-        this.description = description;
-        this.creationDate = creationDate;
-        this.artist = artist;
-        this.reviews = reviews;
-    }
+import { DataTypes } from "sequelize";
+import { sequelize } from "../database/database.js";
 
-    // id
-    get idValue() {
-        return this.id;
-    }
+export const Song = sequelize.define(
+    "songs",
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
 
-    set idValue(value) {
-        this.id = value;
-    }
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
 
-    // name
-    get nameValue() {
-        return this.name;
-    }
+        artist: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
 
-    set nameValue(value) {
-        this.name = value;
-    }
+        album: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
 
-    // rating
-    get ratingValue() {
-        return this.rating;
-    }
+        genre: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
 
-    set ratingValue(value) {
-        this.rating = value;
-    }
+        releaseYear: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
 
-    // description
-    get descriptionValue() {
-        return this.description;
-    }
+        duration: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
 
-    set descriptionValue(value) {
-        this.description = value;
+        coverImage: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
     }
-
-    // creationDate
-    get creationDateValue() {
-        return this.creationDate;
-    }
-
-    set creationDateValue(value) {
-        this.creationDate = value;
-    }
-
-    // artist
-    get artistValue() {
-        return this.artist;
-    }
-
-    set artistValue(value) {
-        this.artist = value;
-    }
-
-    // reviews (one-to-many)
-    get reviewsValue() {
-        return this.reviews;
-    }
-
-    set reviewsValue(value) {
-        this.reviews = value;
-    }
-
-    addReview(review) {
-        this.reviews.push(review);
-    }
-
-    removeReview(reviewId) {
-        this.reviews = this.reviews.filter(r => r.id !== reviewId);
-    }
-}
+);

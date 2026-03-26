@@ -47,23 +47,23 @@ export const Review = sequelize.define(
             allowNull: false,
         },
 
-        song: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-
-        artist: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-
         userId: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+
+        songId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: "songs",
+                key: "id",
+            },
+        },
+
         parentReviewId: {
             type: DataTypes.INTEGER,
-            allowNull: true, //Null -> Review padre 
+            allowNull: true,
             references: {
                 model: "reviews",
                 key: "id",
