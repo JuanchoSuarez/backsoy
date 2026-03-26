@@ -20,11 +20,6 @@ export const getSongById = async (req, res) => {
             include: {
                 model: Review,
                 as: "reviews",
-                include: {
-                    model: User,
-                    as: "user",
-                    attributes: ["id", "name", "username", "profileImage"],
-                },
             },
         });
         if (!song) {

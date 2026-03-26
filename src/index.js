@@ -4,7 +4,7 @@ import { loadInitialReviews } from"./database/initReviews.js";
 import { loadInitialUsers } from "./database/initUsers.js";
 import { loadInitialSongs } from "./database/initSongs.js";
 import { setupRelations } from "./models/relations.js";
-import "./models/Review.js";
+import "./models/review.js";
 import "./models/Users.js";
 import "./models/Follower.js";
 import "./models/Song.js";
