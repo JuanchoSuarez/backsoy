@@ -4,14 +4,6 @@ import { sequelize } from "../database/database.js";
 export const Review = sequelize.define(
     "reviews",
     {
-        userId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: "users",
-                key: "id",
-            },
-        },
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -68,6 +60,14 @@ export const Review = sequelize.define(
         userId: {
             type: DataTypes.INTEGER,
             allowNull: false,
+        },
+        parentReviewId: {
+            type: DataTypes.INTEGER,
+            allowNull: true, //Null -> Review padre 
+            references: {
+                model: "reviews",
+                key: "id",
+            },
         },
     },
     {

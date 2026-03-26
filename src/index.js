@@ -5,7 +5,7 @@ import { loadInitialUsers } from "./database/initUsers.js";
 import { setupRelations } from "./models/relations.js";
 import "./models/review.js";
 import "./models/Users.js";
-
+import "./models/Follower.js";
 
 async function init() {
 
@@ -19,9 +19,9 @@ async function init() {
         console.error("Unable to connect to the database:", err);
     });
 
-    await  sequelize.sync({ force: true });
-
     setupRelations();
+
+    await sequelize.sync({ force: true });
 
 
     await loadInitialUsers();

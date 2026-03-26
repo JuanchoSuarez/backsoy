@@ -1,5 +1,6 @@
 import { User } from "./Users.js";
 import  { Review } from "./review.js";
+import { Follower } from "./Follower.js";
 
 export function setupRelations(){
     User.hasMany(Review, {
@@ -10,7 +11,33 @@ export function setupRelations(){
     });
 
     Review.belongsTo(User,{
-        foreiKey: 'userId',
+        foreignKey: 'userId',
         as: 'user',
+    });
+
+    User.belongsToMany(User, {
+        through: "followers",
+        as: "followingList",
+        foreignKey: "followerId",
+        otherKey: "followingId",    
+    });
+
+    User.belongsToMany(User, {
+        through: "followers",
+        as: "followersList",
+        foreignKey: "followingId",
+        otherKey: "followerId",
+    });
+
+    Review.hasMany(Review, {
+        foreignKey: 'parentReviewId',
+        as: 'replies',
+        onDelete: "cascade",
+        hooks: true
+    });
+
+    Review.belongsTo(Review, {
+        foreignKey: 'parentReviewId',
+        as: 'parentReview',
     });
 }
