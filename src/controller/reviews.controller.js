@@ -1,5 +1,5 @@
 import { Review } from "../models/review.js";
-import { User } from "../models/Users.js";  // <- agregar esta línea
+import { User } from "../models/Users.js"; 
 
 // GET all reviews
 export const getAllReviews = async (req, res) => {
@@ -99,7 +99,7 @@ export const getReviewById = async (req, res) => {
 
 // get replies by review id
 export const getRepliesByReviewId = async (req, res) => {
-    const { id } = req.params;  // <- corregido
+    const { id } = req.params; 
     try {
         const replies = await Review.findAll({
             where: {
