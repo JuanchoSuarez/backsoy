@@ -1,5 +1,5 @@
 import { Song } from "../models/Song.js";
-import { Review } from "../models/Review.js";
+import { Review } from "../models/review.js";
 import { User } from "../models/Users.js";
 
 // GET todas las canciones
