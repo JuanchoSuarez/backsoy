@@ -5,7 +5,9 @@ import {
     updateReview  , 
     deleteReview ,
     getReviewById ,
-    getRepliesByReviewId
+    getRepliesByReviewId ,
+    getReviewsBySongId ,
+    getUserReviews 
 } from "../controller/reviews.controller.js";
 
 
@@ -26,7 +28,14 @@ router.delete("/reviews/:id", deleteReview);
 //get review by id
 router.get("/reviews/:id", getReviewById);
 
+// get reviews by user id
+router.get("/users/:id/reviews", getUserReviews);
+
+// get replies by review id
 router.get("/reviews/:id/replies", getRepliesByReviewId);
+
+// get reviews by song id
+router.get("/songs/:songId/reviews", getReviewsBySongId);
 
 export default router;
 

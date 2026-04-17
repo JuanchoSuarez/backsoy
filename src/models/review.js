@@ -47,6 +47,18 @@ export const Review = sequelize.define(
             allowNull: false,
         },
 
+        // songName y artistName reemplazan song y artist para evitar
+        // colisión de nombres con la asociación belongsTo(Song)
+        songName: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+
+        artistName: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+
         userId: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -54,11 +66,7 @@ export const Review = sequelize.define(
 
         songId: {
             type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: "songs",
-                key: "id",
-            },
+            allowNull: true,
         },
 
         parentReviewId: {
@@ -68,6 +76,15 @@ export const Review = sequelize.define(
                 model: "reviews",
                 key: "id",
             },
+        },
+        parentUsername: {
+            type: DataTypes.STRING,
+            allowNull: true,
+         },
+
+         songCoverImage: {
+            type: DataTypes.STRING,
+            allowNull: true,
         },
     },
     {

@@ -1,7 +1,7 @@
 import { Review } from "../models/review.js";
-import { User } from "../models/Users.js"; 
+import { User } from "../models/Users.js";
 
-// GET all reviews
+// get all reviews
 export const getAllReviews = async (req, res) => {
     try {
         const reviews = await Review.findAll({
@@ -17,43 +17,17 @@ export const getAllReviews = async (req, res) => {
     }
 };
 
-// GET reviews by user id
-export const getUserReviews = async (req, res) => {
-    const id = req.params.id;
-    try {
-        const reviews = await Review.findAll({
-            where: {
-                userId: id,
-            },
-            include: {
-                model: User,
-                as: "user",
-                attributes: ["name", "username", "profileImage", "id"],
-            },
-        });
-    } catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
-};
-
-// POST create new review
+// create new review
 export const createReview = async (req, res) => {
     try {
         const newReview = await Review.create(req.body);
-        const parentReviewId = req.body.parentReviewId;
-        if (parentReviewId != null && parentReviewId != undefined) {
-            const parentReview = await Review.findByPk(parentReviewId);
-            if (!parentReview) {
-                return res.status(404).json({ error: "Parent review not found" });
-            }
-        }
         return res.json(newReview);
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
 };
 
-// PUT update review by id
+// update review by id
 export const updateReview = async (req, res) => {
     try {
         const id = req.params.id;
@@ -68,7 +42,7 @@ export const updateReview = async (req, res) => {
     }
 };
 
-// DELETE review by id
+// delete review by id
 export const deleteReview = async (req, res) => {
     try {
         const id = req.params.id;
@@ -83,11 +57,17 @@ export const deleteReview = async (req, res) => {
     }
 };
 
-// GET review by id
+// get review by id
 export const getReviewById = async (req, res) => {
     try {
         const id = req.params.id;
-        const review = await Review.findByPk(id);
+        const review = await Review.findByPk(id, {
+            include: {
+                model: User,
+                as: "user",
+                attributes: ["name", "username", "profileImage", "id"],
+            },
+        });
         if (!review) {
             return res.status(404).json({ error: "Review not found" });
         }
@@ -102,8 +82,11 @@ export const getRepliesByReviewId = async (req, res) => {
     const { id } = req.params;
     try {
         const replies = await Review.findAll({
-            where: {
-                parentReviewId: id,
+            where: { parentReviewId: id },
+            include: {
+                model: User,
+                as: "user",
+                attributes: ["name", "username", "profileImage", "id"],
             },
             order: [["createdAt", "ASC"]],
         });
@@ -113,4 +96,61 @@ export const getRepliesByReviewId = async (req, res) => {
     }
 };
 
+// get reviews by user id
+export const getUserReviews = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const reviews = await Review.findAll({
+            where: { userId: id },
+            include: {
+                model: User,
+                as: "user",
+                attributes: ["name", "username", "profileImage", "id"],
+            },
+            order: [["createdAt", "DESC"]],
+        });
+        return res.json(reviews);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+};
 
+// get reviews by song id
+export const getReviewsBySongId = async (req, res) => {
+    const { songId } = req.params;
+    try {
+        const reviews = await Review.findAll({
+            where: { songId: songId },
+            include: {
+                model: User,
+                as: "user",
+                attributes: ["name", "username", "profileImage", "id"],
+            },
+            order: [["createdAt", "DESC"]],
+        });
+        return res.json(reviews);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+};
+
+// get user by id
+export const getUserById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const user = await User.findByPk(id, {
+            attributes: [
+                "id", "username", "email", "name", "bio",
+                "website", "location", "profileImage",
+                "birthDate", "followersCount", "followingCount",
+                "createdAt", "updatedAt"
+            ]
+        });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        return res.json(user);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+};
